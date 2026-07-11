@@ -1,0 +1,176 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const services = [
+  {
+    title: 'Software Impulsado con IA',
+    description: 'Desarrollamos soluciones inteligentes que aprenden y se adaptan para optimizar cada aspecto de tu negocio.',
+    icon: 'lucide:brain-circuit',
+  },
+  {
+    title: 'Automatización de Procesos',
+    description: 'Eliminamos tareas repetitivas y agilizamos flujos de trabajo para que tu equipo se enfoque en lo que importa.',
+    icon: 'lucide:cog',
+  },
+  {
+    title: 'Integraciones',
+    description: 'Conectamos tus sistemas y herramientas existentes para crear un ecosistema digital unificado y eficiente.',
+    icon: 'lucide:plug',
+  },
+  {
+    title: 'Software Empresarial',
+    description: 'Construimos plataformas robustas y escalables que resuelven los desafíos únicos de tu organización.',
+    icon: 'lucide:building-2',
+  },
+  {
+    title: 'Aplicaciones Móviles',
+    description: 'Creamos experiencias móviles nativas e intuitivas que conectan con tus usuarios donde sea que estén.',
+    icon: 'lucide:smartphone',
+  },
+  {
+    title: 'Aplicaciones Web',
+    description: 'Diseñamos aplicaciones web modernas, rápidas y accesibles que impulsan la productividad.',
+    icon: 'lucide:globe',
+  },
+  {
+    title: 'Cloud y DevOps',
+    description: 'Implementamos infraestructura en la nube con prácticas DevOps para despliegues seguros y continuos.',
+    icon: 'lucide:cloud',
+  },
+];
+---
+
+<section id="services-section" class="relative bg-white">
+  
+  <div id="services-pin" class="h-screen flex flex-col items-center justify-start px-6 overflow-hidden">
+    
+  
+    <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-primary text-center mt-24 max-w-4xl mb-12">
+      Todo lo que tu empresa necesita para crecer
+    </h2>
+
+    <!-- Layout de dos columnas -->
+    <div class="max-w-6xl w-full flex flex-col md:flex-row items-center gap-24">
+      
+      <!-- Títulos a la izquierda: efecto rueda -->
+      <div class="md:w-1/2 relative h-96 overflow-hidden flex items-center justify-center">
+        <div id="services-wheel" class="relative w-full  mr-20">
+          {services.map((service, index) => (
+            <div
+              class="service-title absolute w-full text-center md:text-left left-0"
+              data-index={index}
+              style="top: 50%; transform: translateY(-50%);"
+            >
+              <h3 class="text-2xl md:text-3xl text-right font-bold text-gray-200 transition-colors duration-300 whitespace-nowrap">
+                {service.title}
+              </h3>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Cards a la derecha -->
+      <div class="md:w-1/2 relative min-h-[260px]">
+        {services.map((service, index) => (
+          <div
+            class="service-card absolute inset-0 opacity-0"
+            data-index={index}
+          >
+            <div class="bg-blue-50 rounded-2xl shadow-lg border border-gray-100 h-96 flex flex-col justify-center relative">
+              
+              <div class="absolute bottom-0 p-8">
+                <div class="flex items-center gap-4 mb-5">
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <Icon name={service.icon} class="w-6 h-6 text-primary" />
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900">{service.title}</h4>
+                </div>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    {service.description}
+                </p>
+                
+              </div>
+
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Spacer para scroll -->
+  <div id="services-spacer" style={`height: ${services.length * 80}vh;`}></div>
+</section>
+
+<style>
+  h2, h3, h4 {
+    font-family: 'Montserrat Variable', sans-serif;
+  }
+
+  .service-title.active h3 {
+    color: #111827;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const servicesSection = document.getElementById('services-section');
+  const servicesPin = document.getElementById('services-pin');
+  const titles = document.querySelectorAll('.service-title');
+  const cards = document.querySelectorAll('.service-card');
+  const totalServices = titles.length;
+  const ITEM_SPACING = 70; // px entre cada título
+
+  if (servicesSection && servicesPin && totalServices > 0) {
+    let currentIndex = 0;
+
+    // Estado inicial: posicionar todos los títulos en rueda
+    titles.forEach((title, i) => {
+      const offset = i * ITEM_SPACING;
+      gsap.set(title, { y: offset, opacity: i === 0 ? 1 : 0.4 });
+      if (i === 0) title.classList.add('active');
+    });
+
+    // Primera card visible
+    gsap.set(cards[0], { opacity: 1 });
+
+    ScrollTrigger.create({
+      trigger: servicesSection,
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: servicesPin,
+      scrub: 0.5,
+      onUpdate: (self) => {
+        const progress = self.progress;
+
+        // Posición continua del "foco" (interpolada)
+        const floatIndex = progress * (totalServices - 1);
+        const newIndex = Math.min(Math.round(floatIndex), totalServices - 1);
+
+        // Mover todos los títulos continuamente (efecto rueda)
+        titles.forEach((title, i) => {
+          const relativePos = (i - floatIndex) * ITEM_SPACING;
+          gsap.set(title, {
+            y: relativePos,
+            opacity: Math.abs(i - floatIndex) < 0.5 ? 1 : 0.7,
+          });
+        });
+
+        // Cambiar card cuando cambia el índice activo
+        if (newIndex !== currentIndex) {
+          titles[currentIndex].classList.remove('active');
+          gsap.to(cards[currentIndex], { opacity: 0, duration: 0.25, overwrite: true });
+
+          titles[newIndex].classList.add('active');
+          gsap.to(cards[newIndex], { opacity: 1, duration: 0.25, overwrite: true });
+
+          currentIndex = newIndex;
+        }
+      },
+    });
+  }
+</script>
