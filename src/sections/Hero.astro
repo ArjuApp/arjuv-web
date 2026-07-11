@@ -1,0 +1,88 @@
+---
+import LogoArjuv from '../components/LogoArjuv.astro';
+import heroImage from '../assets/hero.jpg';
+---
+
+<section id="hero-section" class="relative bg-blue-50">
+  <!-- Contenedor con scroll pinning -->
+  <div id="hero-pin" class="h-screen flex flex-col items-center justify-center overflow-hidden sticky top-0">
+    <!-- Título central -->
+    <h1
+      id="hero-title"
+      class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 text-center max-w-4xl leading-tight px-6 z-10"
+    >
+      Impulsamos tu crecimiento creando mejores experiencias
+    </h1>
+
+    <!-- Card -->
+    <div
+      id="hero-card"
+      class="absolute bottom-0 translate-y-1/2 w-80 rounded-3xl bg-white shadow-2xl overflow-hidden z-20"
+    >
+      <!-- Header del card con logo -->
+      <div class="flex items-center justify-center py-4 px-6 border-b border-gray-100">
+        <LogoArjuv class="h-6 w-auto" />
+      </div>
+      <!-- Contenido del card: imagen -->
+      <div class="w-full">
+        <img
+          src={heroImage.src}
+          alt="Hero"
+          class="w-full h-auto object-cover"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Espacio extra para permitir el scroll de la animación -->
+  <div id="hero-spacer" class="h-screen"></div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const heroSection = document.getElementById('hero-section');
+  const heroTitle = document.getElementById('hero-title');
+  const heroCard = document.getElementById('hero-card');
+
+  if (heroSection && heroTitle && heroCard) {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: heroSection,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 1,
+        pin: '#hero-pin',
+      },
+    });
+
+    // Card: sube desde abajo (translateY 50% → 0) y se expande al ancho completo
+    tl.to(
+      heroCard,
+      {
+        y: 0,
+        width: '100%',
+        borderRadius: '0px',
+        duration: 1,
+        ease: 'none',
+      },
+      0
+    );
+
+    // Título: se reduce y sube hasta desaparecer
+    tl.to(
+      heroTitle,
+      {
+        scale: 0.6,
+        y: -200,
+        opacity: 0,
+        duration: 1,
+        ease: 'none',
+      },
+      0
+    );
+  }
+</script>
