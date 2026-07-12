@@ -1,0 +1,188 @@
+---
+import benefits1 from '../assets/benefits1.png';
+import benefits2 from '../assets/benefits2.png';
+import benefits3 from '../assets/benefits3.png';
+import benefits4 from '../assets/benefits4.png';
+
+const benefits = [
+  {
+    chip: 'Experiencias memorables',
+    phrase: 'Creamos experiencias que las personas recuerdan y disfrutan.',
+    description: 'Diseñamos productos digitales intuitivos, rápidos y atractivos, enfocados en las necesidades reales de tus usuarios. Cada interacción está pensada para aumentar la satisfacción, fortalecer la confianza en tu marca y convertir visitantes en clientes fieles.',
+    image: benefits1,
+    bg: 'bg-blue-100',
+  },
+  {
+    chip: 'Automatización inteligente',
+    phrase: 'Automatizamos procesos para que tu negocio avance más rápido.',
+    description: 'Implementamos soluciones impulsadas por inteligencia artificial y automatización que reducen tareas repetitivas, minimizan errores y optimizan los tiempos operativos. Así, tu equipo puede enfocarse en actividades estratégicas mientras la tecnología trabaja por ti.',
+    image: benefits2,
+    bg: 'bg-indigo-100',
+  },
+  {
+    chip: 'Información centralizada',
+    phrase: 'Toda tu información en un solo lugar, siempre disponible.',
+    description: 'Integramos los datos de tus diferentes sistemas en una única plataforma segura y organizada. Esto facilita la consulta de información en tiempo real, mejora la toma de decisiones y elimina la duplicidad de datos y procesos.',
+    image: benefits3,
+    bg: 'bg-sky-100',
+  },
+  {
+    chip: 'Tecnología preparada para crecer',
+    phrase: 'Construimos soluciones que crecen junto con tu empresa.',
+    description: 'Desarrollamos aplicaciones con arquitecturas modernas, escalables y de alto rendimiento, capaces de adaptarse al crecimiento de tu negocio. Nuestras soluciones están preparadas para incorporar nuevas funcionalidades, soportar más usuarios y responder a las necesidades del futuro sin perder estabilidad.',
+    image: benefits4,
+    bg: 'bg-violet-100',
+  },
+];
+---
+
+<section id="benefits-section" class="relative bg-white" style="height: 450vh;">
+  <div id="benefits-pin" class="h-screen flex flex-col items-center justify-center px-6 sticky top-0 overflow-hidden">
+    <!-- Título de la sección -->
+    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary text-center mb-12">
+      ¿Por qué elegirnos?
+    </h2>
+
+    <!-- Contenedor de tarjetas apiladas -->
+    <div class="relative w-full max-w-[1200px] h-[480px]">
+      {benefits.map((benefit, index) => (
+        <div
+          class={`benefit-card absolute inset-x-0 mx-auto w-full max-w-[1200px] h-[480px] rounded-3xl overflow-hidden ${benefit.bg}`}
+          data-index={index}
+        >
+          <div class="flex flex-col md:flex-row h-full">
+            <!-- Imagen -->
+            <div class="md:w-1/2 h-full overflow-hidden">
+              <img
+                src={benefit.image.src}
+                alt={benefit.chip}
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <!-- Contenido -->
+            <div class="md:w-1/2 flex flex-col justify-center p-8 md:p-12">
+              <!-- Chip -->
+              <span class="inline-block w-fit text-xs font-semibold text-primary bg-primary/10 px-3 py-1.5 rounded-full mb-4">
+                {benefit.chip}
+              </span>
+              <!-- Frase -->
+              <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4">
+                {benefit.phrase}
+              </h3>
+              <!-- Descripción -->
+              <p class="text-sm md:text-base text-gray-600 leading-relaxed">
+                {benefit.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  h2, h3 {
+    font-family: 'Montserrat Variable', sans-serif;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const benefitsSection = document.getElementById('benefits-section');
+  const cards = document.querySelectorAll('.benefit-card');
+  const totalCards = cards.length;
+
+  if (benefitsSection && totalCards > 0) {
+    const CARD_GAP = 8; // px de espacio entre la card de atrás y la que sube
+
+    cards.forEach((card, i) => {
+      const el = card as HTMLElement;
+      if (i === 0) {
+        gsap.set(el, { yPercent: 0, y: 0, maxWidth: '1200px', zIndex: 1, visibility: 'visible' });
+      } else {
+        // Fuera de pantalla: 100vh desde la posición del contenedor
+        gsap.set(el, { y: window.innerHeight, maxWidth: '1200px', zIndex: 0, visibility: 'hidden' });
+      }
+    });
+
+    const transitionCount = totalCards - 1;
+
+    ScrollTrigger.create({
+      trigger: benefitsSection,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.5,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        const segmentSize = 1 / transitionCount;
+        const viewportH = window.innerHeight;
+
+        cards.forEach((card, i) => {
+          const el = card as HTMLElement;
+
+          if (i === 0) {
+            // Primera card siempre arriba, se encoge cuando la siguiente sube
+            const shrinkEnd = segmentSize * 0.8;
+            const shrinkProgress = Math.max(0, Math.min(1, progress / shrinkEnd));
+            const maxWidth = 1200 - shrinkProgress * 150;
+            gsap.set(el, {
+              y: 0,
+              maxWidth: `${maxWidth}px`,
+              zIndex: 1,
+              visibility: 'visible',
+            });
+          } else {
+            const transStart = (i - 1) * segmentSize;
+            const enterDuration = segmentSize * 0.8;
+            const enterProgress = Math.max(0, Math.min(1, (progress - transStart) / enterDuration));
+
+            if (enterProgress <= 0) {
+              // Oculta fuera de pantalla abajo
+              gsap.set(el, { y: viewportH, maxWidth: '1200px', zIndex: 0, visibility: 'hidden' });
+            } else {
+              // Entra desde la parte inferior del viewport hasta su posición (con gap)
+              const targetY = CARD_GAP;
+              const startY = viewportH;
+              const currentY = startY - enterProgress * (startY - targetY);
+
+              gsap.set(el, {
+                y: currentY,
+                maxWidth: '1200px',
+                zIndex: i + 1,
+                visibility: 'visible',
+              });
+
+              // Encoger la card anterior
+              const prevEl = cards[i - 1] as HTMLElement;
+              const prevShrink = Math.max(0, Math.min(1, enterProgress));
+              const prevMaxWidth = 1200 - prevShrink * 150;
+              gsap.set(prevEl, {
+                maxWidth: `${prevMaxWidth}px`,
+                zIndex: i,
+              });
+            }
+
+            // Si ya está en posición y hay siguiente card, encogerse
+            if (i < totalCards - 1 && enterProgress >= 1) {
+              const nextTransStart = i * segmentSize;
+              const nextEnterDuration = segmentSize * 0.8;
+              const nextEnterProgress = Math.max(0, Math.min(1, (progress - nextTransStart) / nextEnterDuration));
+              const shrinkMaxWidth = 1200 - nextEnterProgress * 150;
+              gsap.set(el, {
+                y: CARD_GAP,
+                maxWidth: `${shrinkMaxWidth}px`,
+                zIndex: i + 1,
+                visibility: 'visible',
+              });
+            }
+          }
+        });
+      },
+    });
+  }
+</script>
