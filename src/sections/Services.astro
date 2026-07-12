@@ -40,9 +40,9 @@ const services = [
 ];
 ---
 
-<section id="services-section" class="relative bg-white">
+<section id="services-section" class="relative bg-white" style={`height: ${services.length * 30 + 100}vh;`}>
   
-  <div id="services-pin" class="h-screen flex flex-col items-center justify-start px-6 overflow-hidden">
+  <div id="services-pin" class="h-screen flex flex-col items-center justify-start px-6 overflow-hidden sticky top-0">
     
   
     <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-primary text-center mt-24 max-w-4xl mb-12">
@@ -50,11 +50,11 @@ const services = [
     </h2>
 
     <!-- Layout de dos columnas -->
-    <div class="max-w-6xl w-full flex flex-col md:flex-row items-center gap-24">
+    <div class="max-w-6xl w-full flex flex-col md:flex-row items-start gap-24 mt-16">
       
       <!-- Títulos a la izquierda: efecto rueda -->
       <div class="md:w-1/2 relative h-96 overflow-hidden flex items-center justify-center">
-        <div id="services-wheel" class="relative w-full  mr-20">
+        <div id="services-wheel" class="relative w-full mr-20">
           {services.map((service, index) => (
             <div
               class="service-title absolute w-full text-center md:text-left left-0"
@@ -70,15 +70,15 @@ const services = [
       </div>
 
       <!-- Cards a la derecha -->
-      <div class="md:w-1/2 relative min-h-[260px]">
+      <div class="md:w-1/2 relative h-96">
         {services.map((service, index) => (
           <div
             class="service-card absolute inset-0 opacity-0"
             data-index={index}
           >
-            <div class="bg-blue-50 rounded-2xl shadow-lg border border-gray-100 h-96 flex flex-col justify-center relative">
+            <div class="bg-blue-50 rounded-2xl shadow-lg border border-gray-100 h-full flex flex-col justify-end relative">
               
-              <div class="absolute bottom-0 p-8">
+              <div class="p-8">
                 <div class="flex items-center gap-4 mb-5">
                     <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                     <Icon name={service.icon} class="w-6 h-6 text-primary" />
@@ -88,7 +88,6 @@ const services = [
                 <p class="text-gray-600 text-base leading-relaxed">
                     {service.description}
                 </p>
-                
               </div>
 
             </div>
@@ -97,9 +96,6 @@ const services = [
       </div>
     </div>
   </div>
-
-  <!-- Spacer para scroll -->
-  <div id="services-spacer" style={`height: ${services.length * 80}vh;`}></div>
 </section>
 
 <style>
@@ -142,7 +138,7 @@ const services = [
       trigger: servicesSection,
       start: 'top top',
       end: 'bottom bottom',
-      pin: servicesPin,
+      pin: false,
       scrub: 0.5,
       onUpdate: (self) => {
         const progress = self.progress;
