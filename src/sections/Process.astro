@@ -1,4 +1,7 @@
 ---
+
+import LittleTitle from '../components/LittleTitle.astro';
+
 const steps = [
   {
     number: '01',
@@ -28,9 +31,13 @@ const steps = [
 ];
 ---
 
-<section id="process-section" class="relative bg-white" style="height: 300vh;">
+<section id="process" class="relative bg-white" style="height: 300vh;">
   <!-- Contenido fijo mientras se hace scroll -->
-  <div id="process-pin" class="h-screen flex flex-col items-center justify-center px-6 sticky top-0">
+
+  
+  <div id="process-pin" class="h-screen flex flex-col items-center gap-12 justify-center px-6 sticky top-0">
+      <LittleTitle title='¿Cómo Trabajamos?' className='' />
+      
     <!-- Título -->
     <div class="text-center mb-20">
       <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary max-w-3xl mx-auto leading-tight">
@@ -116,7 +123,7 @@ const steps = [
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const processSection = document.getElementById('process-section');
+  const processSection = document.getElementById('process');
   const processLine = document.getElementById('process-line');
   const steps = document.querySelectorAll('.process-step');
   const totalSteps = steps.length;

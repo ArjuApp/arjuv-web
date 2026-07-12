@@ -3,7 +3,7 @@ import LogoArjuv from '../components/LogoArjuv.astro';
 import heroImage from '../assets/hero.jpg';
 ---
 
-<section id="hero-section" class="relative bg-blue-100 h-[200vh]">
+<section id="home" class="relative bg-blue-100 h-[200vh]">
   
   <div id="hero-pin" class="h-screen flex flex-col items-center justify-start overflow-hidden sticky top-0">
   
@@ -21,7 +21,7 @@ import heroImage from '../assets/hero.jpg';
     >
   
       <div class="flex items-center justify-center py-4 px-6 border-b border-gray-100">
-        <LogoArjuv class="h-8 w-auto" />
+        <LogoArjuv class="h-8 w-auto" color="#002991" />
       </div>
   
       <div class="w-full relative overflow-hidden">
@@ -58,7 +58,7 @@ import heroImage from '../assets/hero.jpg';
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const heroSection = document.getElementById('hero-section');
+  const heroSection = document.getElementById('home');
   const heroTitle = document.getElementById('hero-title');
   const heroCard = document.getElementById('hero-card');
   const heroCtaText = document.getElementById('hero-cta-text');

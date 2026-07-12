@@ -1,4 +1,6 @@
 ---
+import LittleTitle from '../components/LittleTitle.astro';
+
 const cards = [
   {
     title: 'Innovación',
@@ -23,40 +25,49 @@ const cards = [
 ];
 ---
 
-<section id="ours-section" class="relative bg-blue-50 py-24 px-6 overflow-hidden">
-  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+<section id="ours" class="relative bg-blue-50 py-24 px-6 overflow-hidden">
+
+
+    <LittleTitle title='Nuestra Cultura' className="text-center mb-10 mx-auto max-w-56" />
+
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+
     
     <!-- Izquierda: burbujas giratorias -->
     <div class="md:w-1/2 flex items-center justify-center">
-      <div id="ours-orbit" class="relative w-[360px] h-[360px]">
+        <div id="ours-orbit" class="relative w-[360px] h-[360px]">
         <!-- Centro visual -->
         <div class="absolute inset-0 flex items-center justify-center">
-          <div class="w-3 h-3 rounded-full bg-primary/30"></div>
+            <div class="w-3 h-3 rounded-full bg-primary/30"></div>
         </div>
         {cards.map((card, index) => (
-          <div
+            <div
             class="ours-bubble absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[130px] h-[130px] rounded-full bg-white shadow-md border border-gray-100 flex flex-col items-center justify-center text-center p-3 transition-shadow duration-300"
             data-index={index}
-          >
+            >
             <h4 class="text-xs font-bold text-primary mb-1 leading-tight">{card.title}</h4>
             <p class="text-[10px] text-gray-500 leading-tight">{card.description}</p>
-          </div>
+            </div>
         ))}
-      </div>
+        </div>
     </div>
 
     <!-- Derecha: título y descripción -->
     <div class="md:w-1/2">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-6">
         Creamos tecnología con propósito
-      </h2>
-      <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
+        </h2>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
         Creemos que la tecnología solo tiene sentido cuando genera valor para las personas. 
         Diseñamos soluciones que simplifican procesos, fortalecen la relación con los clientes 
         y ayudan a las empresas a crecer de forma sostenible.
-      </p>
+        </p>
     </div>
-  </div>
+    </div>
+
+
+    
+  
 </section>
 
 <style>
@@ -94,7 +105,7 @@ const cards = [
 
     // Animación de rotación orbital con scroll
     ScrollTrigger.create({
-      trigger: '#ours-section',
+      trigger: '#ours',
       start: 'top 80%',
       end: 'bottom 20%',
       scrub: 1,

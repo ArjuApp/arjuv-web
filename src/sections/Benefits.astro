@@ -4,6 +4,8 @@ import benefits2 from '../assets/benefits2.png';
 import benefits3 from '../assets/benefits3.png';
 import benefits4 from '../assets/benefits4.png';
 
+import LittleTitle from '../components/LittleTitle.astro';
+
 const benefits = [
   {
     chip: 'Experiencias memorables',
@@ -36,12 +38,17 @@ const benefits = [
 ];
 ---
 
-<section id="benefits-section" class="relative bg-white" style="height: 450vh;">
+<section id="benefits" class="relative bg-white" style="height: 450vh;">
   <div id="benefits-pin" class="h-screen flex flex-col items-center justify-center px-6 sticky top-0 overflow-hidden">
-    <!-- Título de la sección -->
-    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary text-center mb-12">
-      ¿Por qué elegirnos?
-    </h2>
+
+    <div class="flex flex-col items-center justify-center gap-12">
+        <LittleTitle title='¿Cómo Trabajamos?' />
+    
+        <!-- Título de la sección -->
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary text-center mb-12">
+          ¿Por qué elegirnos?
+        </h2>
+    </div>
 
     <!-- Contenedor de tarjetas apiladas -->
     <div class="relative w-full max-w-[1200px] h-[480px]">
@@ -93,7 +100,7 @@ const benefits = [
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const benefitsSection = document.getElementById('benefits-section');
+  const benefitsSection = document.getElementById('benefits');
   const cards = document.querySelectorAll('.benefit-card');
   const totalCards = cards.length;
 
