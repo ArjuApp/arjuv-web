@@ -2,17 +2,86 @@
 import '@fontsource/poppins';
 import '@fontsource-variable/montserrat/wght.css';
 import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalURL?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'ARJUV | Creando Mejores Experiencias',
+  description = 'Somos una empresa de desarrollo de software a la medida con productos impulsados por inteligencia artificial. Creamos experiencias digitales que impulsan el crecimiento de tu negocio.',
+  canonicalURL = Astro.url.href,
+  ogImage = '/og-image.png',
+} = Astro.props;
+
+const siteURL = Astro.site?.toString() || 'https://arjuv.com';
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "ARJUV",
+  "url": siteURL,
+  "logo": `${siteURL}/favicon.svg`,
+  "description": description,
+  "sameAs": [],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+57-312-345-6607",
+    "email": "arjuapplication@gmail.com",
+    "contactType": "sales"
+  },
+  "offers": {
+    "@type": "AggregateOffer",
+    "description": "Desarrollo de software a la medida, automatización de procesos, aplicaciones web y móviles, integraciones, cloud & DevOps, software impulsado con IA"
+  }
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>ARJUV | Creando Mejores Experiencias</title>
+
+		<!-- SEO básico -->
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content="desarrollo de software, software a la medida, inteligencia artificial, IA, automatización, aplicaciones web, aplicaciones móviles, cloud, DevOps, transformación digital, Colombia" />
+		<meta name="author" content="ARJUV" />
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Robots -->
+		<meta name="robots" content="index, follow" />
+		<meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={`${siteURL}${ogImage}`} />
+		<meta property="og:site_name" content="ARJUV" />
+		<meta property="og:locale" content="es_CO" />
+
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalURL} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${siteURL}${ogImage}`} />
+
+		<!-- Tema y colores -->
+		<meta name="theme-color" content="#002991" />
+		<meta name="msapplication-TileColor" content="#002991" />
+
+		<!-- Structured Data (JSON-LD) -->
+		<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 	</head>
 	<body>
 		<slot />
