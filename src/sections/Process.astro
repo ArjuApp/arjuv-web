@@ -32,46 +32,84 @@ const steps = [
 ---
 
 <section id="process" class="relative bg-white" style="height: 300vh;">
-  <!-- Contenido fijo mientras se hace scroll -->
-
   
-  <div id="process-pin" class="h-screen flex flex-col items-center gap-12 justify-center px-6 sticky top-0">
-      <LittleTitle title='¿Cómo Trabajamos?' className='' />
-      
-    <!-- Título -->
-    <div class="text-center mb-20">
-      <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary max-w-3xl mx-auto leading-tight">
-        Un camino claro, de la idea al resultado.
-      </h2>
-    </div>
+  <!-- Versión móvil: timeline vertical con animación scroll -->
+  <div class="md:hidden h-full">
+    <div id="process-pin-mobile" class="h-screen flex flex-col items-center justify-center px-6 sticky top-0">
+      <div class="text-center mb-10">
+        <LittleTitle title='¿Cómo Trabajamos?' className='' />
+        <h2 class="text-2xl font-bold text-primary max-w-3xl mx-auto leading-tight mt-6">
+          Un camino claro, de la idea al resultado.
+        </h2>
+      </div>
 
-    <!-- Timeline -->
-    <div class="max-w-5xl w-full mx-auto relative">
-      <!-- Línea base (gris) -->
-      <div class="absolute top-[7px] left-0 right-0 h-[2px] bg-gray-200"></div>
-      <!-- Línea de progreso (primario) -->
-      <div id="process-line" class="absolute top-[7px] left-0 h-[2px] bg-primary w-0 transition-none"></div>
+      <div class="relative max-w-sm mx-auto w-full">
+        <!-- Línea vertical base (gris) -->
+        <div class="absolute top-0 bottom-0 left-[7px] w-[2px] bg-gray-200"></div>
+        <!-- Línea vertical de progreso -->
+        <div id="process-line-mobile" class="absolute top-0 left-[7px] w-[2px] bg-primary h-0 transition-none"></div>
 
-      <!-- Steps -->
-      <div class="relative flex justify-between">
-        {steps.map((step, index) => (
-          <div class="process-step flex flex-col items-center text-center w-1/5" data-index={index}>
-            <!-- Punto sobre la línea -->
-            <div class="process-dot w-4 h-4 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center mb-6 relative z-10 transition-all duration-500">
-              <div class="w-1.5 h-1.5 rounded-full bg-gray-300 transition-all duration-500"></div>
+        <!-- Steps verticales -->
+        <div class="flex flex-col gap-8">
+          {steps.map((step, index) => (
+            <div class="process-step-mobile flex items-start gap-4 relative" data-index={index}>
+              <!-- Punto -->
+              <div class="process-dot-mobile w-4 h-4 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center relative z-10 mt-1 shrink-0 transition-all duration-500">
+                <div class="w-1.5 h-1.5 rounded-full bg-gray-300 transition-all duration-500"></div>
+              </div>
+              <!-- Contenido -->
+              <div>
+                <span class="text-xs text-gray-400 font-mono">{step.number}</span>
+                <h3 class="text-base font-bold text-gray-400 mb-1 transition-colors duration-500">{step.title}</h3>
+                <p class="text-sm text-gray-400 leading-relaxed transition-colors duration-500">{step.description}</p>
+              </div>
             </div>
-            <!-- Número -->
-            <span class="text-xs text-gray-400 mb-1 font-mono">{step.number}</span>
-            <!-- Título -->
-            <h3 class="text-sm md:text-base font-bold text-gray-400 mb-2 transition-colors duration-500">
-              {step.title}
-            </h3>
-            <!-- Descripción -->
-            <p class="text-xs md:text-sm text-gray-400 max-w-[160px] leading-relaxed transition-colors duration-500">
-              {step.description}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Versión desktop: timeline horizontal con animación scroll -->
+  <div class="hidden md:block h-full">
+    <div id="process-pin" class="h-screen flex flex-col items-center gap-12 justify-center px-6 sticky top-0">
+      <LittleTitle title='¿Cómo Trabajamos?' className='' />
+        
+      <!-- Título -->
+      <div class="text-center mb-20">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-primary max-w-3xl mx-auto leading-tight">
+          Un camino claro, de la idea al resultado.
+        </h2>
+      </div>
+
+      <!-- Timeline -->
+      <div class="max-w-5xl w-full mx-auto relative">
+        <!-- Línea base (gris) -->
+        <div class="absolute top-[7px] left-0 right-0 h-[2px] bg-gray-200"></div>
+        <!-- Línea de progreso (primario) -->
+        <div id="process-line" class="absolute top-[7px] left-0 h-[2px] bg-primary w-0 transition-none"></div>
+
+        <!-- Steps -->
+        <div class="relative flex justify-between">
+          {steps.map((step, index) => (
+            <div class="process-step flex flex-col items-center text-center w-1/5" data-index={index}>
+              <!-- Punto sobre la línea -->
+              <div class="process-dot w-4 h-4 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center mb-6 relative z-10 transition-all duration-500">
+                <div class="w-1.5 h-1.5 rounded-full bg-gray-300 transition-all duration-500"></div>
+              </div>
+              <!-- Número -->
+              <span class="text-xs text-gray-400 mb-1 font-mono">{step.number}</span>
+              <!-- Título -->
+              <h3 class="text-sm md:text-base font-bold text-gray-400 mb-2 transition-colors duration-500">
+                {step.title}
+              </h3>
+              <!-- Descripción -->
+              <p class="text-xs md:text-sm text-gray-400 max-w-[160px] leading-relaxed transition-colors duration-500">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </div>
@@ -82,37 +120,45 @@ const steps = [
     font-family: 'Montserrat Variable', sans-serif;
   }
 
-  .process-step.active .process-dot {
+  .process-step.active .process-dot,
+  .process-step-mobile.active .process-dot-mobile {
     border-color: #002991;
     box-shadow: 0 0 12px rgba(0, 41, 145, 0.35);
   }
 
-  .process-step.active .process-dot div {
+  .process-step.active .process-dot div,
+  .process-step-mobile.active .process-dot-mobile div {
     background-color: #002991;
   }
 
-  .process-step.active h3 {
+  .process-step.active h3,
+  .process-step-mobile.active h3 {
     color: #111827;
   }
 
-  .process-step.active p {
+  .process-step.active p,
+  .process-step-mobile.active p {
     color: #374151;
   }
 
-  .process-step.completed .process-dot {
+  .process-step.completed .process-dot,
+  .process-step-mobile.completed .process-dot-mobile {
     border-color: #002991;
     background-color: #002991;
   }
 
-  .process-step.completed .process-dot div {
+  .process-step.completed .process-dot div,
+  .process-step-mobile.completed .process-dot-mobile div {
     background-color: #ffffff;
   }
 
-  .process-step.completed h3 {
+  .process-step.completed h3,
+  .process-step-mobile.completed h3 {
     color: #374151;
   }
 
-  .process-step.completed p {
+  .process-step.completed p,
+  .process-step-mobile.completed p {
     color: #6b7280;
   }
 </style>
@@ -124,36 +170,64 @@ const steps = [
   gsap.registerPlugin(ScrollTrigger);
 
   const processSection = document.getElementById('process');
-  const processLine = document.getElementById('process-line');
-  const steps = document.querySelectorAll('.process-step');
-  const totalSteps = steps.length;
 
-  if (processSection && processLine && totalSteps > 0) {
-    ScrollTrigger.create({
-      trigger: processSection,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.8,
-      onUpdate: (self) => {
-        const progress = self.progress;
+  if (processSection) {
+    if (window.innerWidth >= 768) {
+      // Desktop: timeline horizontal
+      const processLine = document.getElementById('process-line');
+      const steps = document.querySelectorAll('.process-step');
+      const totalSteps = steps.length;
 
-        // Animar la línea de progreso
-        const linePercent = progress * 100;
-        processLine.style.width = `${linePercent}%`;
+      if (processLine && totalSteps > 0) {
+        ScrollTrigger.create({
+          trigger: processSection,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.8,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            processLine.style.width = `${progress * 100}%`;
 
-        // Determinar qué steps están activos
-        const activeUpTo = Math.floor(progress * totalSteps);
-
-        steps.forEach((step, i) => {
-          step.classList.remove('active', 'completed');
-
-          if (i < activeUpTo) {
-            step.classList.add('completed');
-          } else if (i === activeUpTo && progress > 0) {
-            step.classList.add('active');
-          }
+            const activeUpTo = Math.floor(progress * totalSteps);
+            steps.forEach((step, i) => {
+              step.classList.remove('active', 'completed');
+              if (i < activeUpTo) {
+                step.classList.add('completed');
+              } else if (i === activeUpTo && progress > 0) {
+                step.classList.add('active');
+              }
+            });
+          },
         });
-      },
-    });
+      }
+    } else {
+      // Móvil: timeline vertical
+      const processLineMobile = document.getElementById('process-line-mobile');
+      const stepsMobile = document.querySelectorAll('.process-step-mobile');
+      const totalStepsMobile = stepsMobile.length;
+
+      if (processLineMobile && totalStepsMobile > 0) {
+        ScrollTrigger.create({
+          trigger: processSection,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.8,
+          onUpdate: (self) => {
+            const progress = self.progress;
+            processLineMobile.style.height = `${progress * 100}%`;
+
+            const activeUpTo = Math.floor(progress * totalStepsMobile);
+            stepsMobile.forEach((step, i) => {
+              step.classList.remove('active', 'completed');
+              if (i < activeUpTo) {
+                step.classList.add('completed');
+              } else if (i === activeUpTo && progress > 0) {
+                step.classList.add('active');
+              }
+            });
+          },
+        });
+      }
+    }
   }
 </script>
