@@ -58,63 +58,91 @@ const services = [
 ];
 ---
 
-<section id="services" class="relative bg-white" style={`height: ${services.length * 30 + 100}vh;`}>
+<section id="services" class="relative bg-white md:h-[auto]" data-service-count={services.length}>
   
-  <div id="services-pin" class="h-screen flex flex-col items-center justify-start px-6 overflow-hidden sticky top-0">
-  
-    
-    <LittleTitle title='¿Qué Ofrecemos?' className='mt-24' />
-  
-    <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-primary mt-12 text-center  max-w-4xl mb-12">
-      Todo lo que tu empresa necesita para crecer
-    </h2>
+  <!-- Versión móvil: cards apiladas sin animación -->
+  <div class="md:hidden px-4 py-16">
+    <div class="text-center mb-8">
+      <LittleTitle title='¿Qué Ofrecemos?' className='' />
+      <h2 class="text-2xl font-bold text-primary mt-6">
+        Todo lo que tu empresa necesita para crecer
+      </h2>
+    </div>
 
-    <!-- Layout de dos columnas -->
-    <div class="max-w-6xl w-full flex flex-col md:flex-row items-start gap-24 mt-16">
-      
-      <!-- Títulos a la izquierda: efecto rueda -->
-      <div class="md:w-1/2 relative h-[420px] overflow-hidden flex items-center justify-center">
-        <div id="services-wheel" class="relative w-full mr-20">
+    <div class="flex flex-col gap-6">
+      {services.map((service) => (
+        <div class="bg-blue-50 rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <img src={service.image.src} class="w-full h-48 object-cover" alt={service.title} />
+          <div class="p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
+                <Icon name={service.icon} class="w-5 h-5 text-primary" />
+              </div>
+              <h4 class="text-base font-semibold text-gray-900">{service.title}</h4>
+            </div>
+            <p class="text-gray-600 text-sm leading-relaxed">
+              {service.description}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Versión desktop: animación con scroll -->
+  <div class="hidden md:block" style={`height: ${services.length * 30 + 100}vh;`}>
+    <div id="services-pin" class="h-screen flex flex-col items-center justify-start px-6 overflow-hidden sticky top-0">
+    
+      <LittleTitle title='¿Qué Ofrecemos?' className='mt-24' />
+    
+      <h2 class="text-2xl md:text-3xl lg:text-5xl font-bold text-primary mt-12 text-center max-w-4xl mb-12">
+        Todo lo que tu empresa necesita para crecer
+      </h2>
+
+      <!-- Layout de dos columnas -->
+      <div class="max-w-6xl w-full flex flex-row items-start gap-24 mt-16">
+        
+        <!-- Títulos a la izquierda: efecto rueda -->
+        <div class="w-1/2 relative h-[420px] overflow-hidden flex items-center justify-center">
+          <div id="services-wheel" class="relative w-full mr-20">
+            {services.map((service, index) => (
+              <div
+                class="service-title absolute w-full text-center md:text-left left-0"
+                data-index={index}
+                style="top: 50%; transform: translateY(-50%);"
+              >
+                <h3 class="text-2xl md:text-3xl text-right font-bold text-gray-200 transition-colors duration-300 whitespace-nowrap">
+                  {service.title}
+                </h3>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Cards a la derecha -->
+        <div class="w-1/2 relative h-[420px]">
           {services.map((service, index) => (
             <div
-              class="service-title absolute w-full text-center md:text-left left-0"
+              class="service-card absolute inset-0 opacity-0"
               data-index={index}
-              style="top: 50%; transform: translateY(-50%);"
             >
-              <h3 class="text-2xl md:text-3xl text-right font-bold text-gray-200 transition-colors duration-300 whitespace-nowrap">
-                {service.title}
-              </h3>
+              <div class="bg-blue-50 rounded-2xl shadow-lg border border-gray-100 h-full flex flex-col justify-end relative overflow-hidden">
+                <img src={service.image.src} class="object-bottom w-full h-full" alt={service.title} />
+                <div class="p-8">
+                  <div class="flex items-center gap-4 mb-5">
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                      <Icon name={service.icon} class="w-6 h-6 text-primary" />
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900">{service.title}</h4>
+                  </div>
+                  <p class="text-gray-600 text-base leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
-      </div>
-
-      <!-- Cards a la derecha -->
-      <div class="md:w-1/2 relative h-[420px]">
-        {services.map((service, index) => (
-          <div
-            class="service-card absolute inset-0 opacity-0"
-            data-index={index}
-          >
-            <div class="bg-blue-50 rounded-2xl shadow-lg border border-gray-100 h-full flex flex-col justify-end relative overflow-hidden">
-
-                <img src={service.image.src} class="object-bottom w-full h-full" />
-              
-              <div class="p-8">
-                <div class="flex items-center gap-4 mb-5">
-                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <Icon name={service.icon} class="w-6 h-6 text-primary" />
-                    </div>
-                    <h4 class="text-lg font-semibold text-gray-900">{service.title}</h4>
-                </div>
-                <p class="text-gray-600 text-base leading-relaxed">
-                    {service.description}
-                </p>
-              </div>
-
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   </div>
@@ -136,59 +164,63 @@ const services = [
 
   gsap.registerPlugin(ScrollTrigger);
 
-  const servicesSection = document.getElementById('services');
+  // Solo inicializar animación en md+ (cuando el contenedor desktop está visible)
   const servicesPin = document.getElementById('services-pin');
-  const titles = document.querySelectorAll('.service-title');
-  const cards = document.querySelectorAll('.service-card');
-  const totalServices = titles.length;
-  const ITEM_SPACING = 70; // px entre cada título
+  
+  if (servicesPin && window.innerWidth >= 768) {
+    const servicesSection = servicesPin.parentElement;
+    const titles = document.querySelectorAll('.service-title');
+    const cards = document.querySelectorAll('.service-card');
+    const totalServices = titles.length;
+    const ITEM_SPACING = 70;
 
-  if (servicesSection && servicesPin && totalServices > 0) {
-    let currentIndex = 0;
+    if (servicesSection && totalServices > 0) {
+      let currentIndex = 0;
 
-    // Estado inicial: posicionar todos los títulos en rueda
-    titles.forEach((title, i) => {
-      const offset = i * ITEM_SPACING;
-      gsap.set(title, { y: offset, opacity: i === 0 ? 1 : 0.4 });
-      if (i === 0) title.classList.add('active');
-    });
+      // Estado inicial: posicionar todos los títulos en rueda
+      titles.forEach((title, i) => {
+        const offset = i * ITEM_SPACING;
+        gsap.set(title, { y: offset, opacity: i === 0 ? 1 : 0.4 });
+        if (i === 0) title.classList.add('active');
+      });
 
-    // Primera card visible
-    gsap.set(cards[0], { opacity: 1 });
+      // Primera card visible
+      gsap.set(cards[0], { opacity: 1 });
 
-    ScrollTrigger.create({
-      trigger: servicesSection,
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: false,
-      scrub: 0.5,
-      onUpdate: (self) => {
-        const progress = self.progress;
+      ScrollTrigger.create({
+        trigger: servicesSection,
+        start: 'top top',
+        end: 'bottom bottom',
+        pin: false,
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const progress = self.progress;
 
-        // Posición continua del "foco" (interpolada)
-        const floatIndex = progress * (totalServices - 1);
-        const newIndex = Math.min(Math.round(floatIndex), totalServices - 1);
+          // Posición continua del "foco" (interpolada)
+          const floatIndex = progress * (totalServices - 1);
+          const newIndex = Math.min(Math.round(floatIndex), totalServices - 1);
 
-        // Mover todos los títulos continuamente (efecto rueda)
-        titles.forEach((title, i) => {
-          const relativePos = (i - floatIndex) * ITEM_SPACING;
-          gsap.set(title, {
-            y: relativePos,
-            opacity: Math.abs(i - floatIndex) < 0.5 ? 1 : 0.7,
+          // Mover todos los títulos continuamente (efecto rueda)
+          titles.forEach((title, i) => {
+            const relativePos = (i - floatIndex) * ITEM_SPACING;
+            gsap.set(title, {
+              y: relativePos,
+              opacity: Math.abs(i - floatIndex) < 0.5 ? 1 : 0.7,
+            });
           });
-        });
 
-        // Cambiar card cuando cambia el índice activo
-        if (newIndex !== currentIndex) {
-          titles[currentIndex].classList.remove('active');
-          gsap.to(cards[currentIndex], { opacity: 0, duration: 0.25, overwrite: true });
+          // Cambiar card cuando cambia el índice activo
+          if (newIndex !== currentIndex) {
+            titles[currentIndex].classList.remove('active');
+            gsap.to(cards[currentIndex], { opacity: 0, duration: 0.25, overwrite: true });
 
-          titles[newIndex].classList.add('active');
-          gsap.to(cards[newIndex], { opacity: 1, duration: 0.25, overwrite: true });
+            titles[newIndex].classList.add('active');
+            gsap.to(cards[newIndex], { opacity: 1, duration: 0.25, overwrite: true });
 
-          currentIndex = newIndex;
-        }
-      },
-    });
+            currentIndex = newIndex;
+          }
+        },
+      });
+    }
   }
 </script>
